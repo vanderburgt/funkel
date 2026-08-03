@@ -58,6 +58,17 @@ api.post('/account/login', wrap(async (req, res) => {
   res.json({ username: user.username });
 }));
 
+// Erase everything: the user row cascades to subscriptions and progress.
+// The response hands out a fresh anonymous identity.
+api.post('/account/delete', wrap(async (req, res) => {
+  q.deleteUser.run(req.uid);
+  const crypto = await import('node:crypto');
+  const uid = crypto.randomUUID();
+  q.createUser.run(uid, Date.now());
+  setCookie(req, res, uid);
+  res.json({ ok: true });
+}));
+
 api.post('/account/logout', wrap(async (req, res) => {
   // A fresh anonymous identity; the old account remains reachable via login.
   const crypto = await import('node:crypto');

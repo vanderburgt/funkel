@@ -18,12 +18,31 @@ export const IconPause = ({ size }) => (
   </I>
 );
 
+const skipDigits = {
+  fontFamily: 'var(--mono)',
+  fontSize: '7px',
+  fontWeight: 500,
+  letterSpacing: '0'
+};
+
+// 270° arc opening at the top, arrowhead tangent to the travel direction,
+// digits set in the centre.
 export const IconBack15 = ({ size }) => (
-  <I size={size}><path d="M12 4.5a8 8 0 1 1-7.4 4.9" /><path d="M4.5 4.5v5h5" /></I>
+  <I size={size}>
+    <path d="M12 5.4a7.6 7.6 0 1 0 7.6 7.6" />
+    <path d="M15 2.8l-3 2.6 3 2.6" />
+    <text x="12" y="13.4" textAnchor="middle" dominantBaseline="middle"
+      fill="currentColor" stroke="none" style={skipDigits}>15</text>
+  </I>
 );
 
 export const IconFwd30 = ({ size }) => (
-  <I size={size}><path d="M12 4.5a8 8 0 1 0 7.4 4.9" /><path d="M19.5 4.5v5h-5" /></I>
+  <I size={size}>
+    <path d="M12 5.4a7.6 7.6 0 1 1-7.6 7.6" />
+    <path d="M9 2.8l3 2.6-3 2.6" />
+    <text x="12" y="13.4" textAnchor="middle" dominantBaseline="middle"
+      fill="currentColor" stroke="none" style={skipDigits}>30</text>
+  </I>
 );
 
 export const IconSearch = ({ size }) => (

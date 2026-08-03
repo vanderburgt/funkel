@@ -190,16 +190,14 @@ function PlayerSheet() {
 
         <div className="transport">
           <button className="knob night skip" onClick={() => skip(-15)} aria-label="Back 15 seconds">
-            <IconBack15 size={34} />
-            <span className="n" style={{ paddingTop: 5 }}>15</span>
+            <IconBack15 size={32} />
           </button>
           <button className="knob signal playpause" onClick={toggle}
             aria-label={playing ? 'Pause' : 'Play'}>
             {playing ? <IconPause size={30} /> : <IconPlay size={30} />}
           </button>
           <button className="knob night skip" onClick={() => skip(30)} aria-label="Forward 30 seconds">
-            <IconFwd30 size={34} />
-            <span className="n" style={{ paddingTop: 5 }}>30</span>
+            <IconFwd30 size={32} />
           </button>
         </div>
 

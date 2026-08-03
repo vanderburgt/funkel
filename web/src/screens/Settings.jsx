@@ -23,6 +23,14 @@ export default function Settings() {
 
   const [theme, setTheme] = useState(themePref);
   const [mode, setMode] = useState(null); // 'claim' | 'login' | null
+  const [confirmDelete, setConfirmDelete] = useState(false);
+
+  const deleteAccount = async () => {
+    await api.deleteAccount();
+    await bootstrap();
+    setConfirmDelete(false);
+    showToast('Everything deleted');
+  };
   const [name, setName] = useState('');
   const [pass, setPass] = useState('');
   const [err, setErr] = useState('');
@@ -171,6 +179,32 @@ export default function Settings() {
                 <div className="lbl" style={{ color: 'var(--pen)' }}>Sign in on this device</div>
               </button>
             </>
+          )}
+        </div>
+
+        <div className="panel">
+          {confirmDelete ? (
+            <div className="p-row" style={{ display: 'block' }}>
+              <div className="lbl">Delete everything?</div>
+              <div className="hint" style={{ marginBottom: 12 }}>
+                Follows, listening progress{username ? `, and the account “${username}”` : ''} are
+                erased from the server permanently. There is no undo.
+              </div>
+              <div style={{ display: 'flex', gap: 10 }}>
+                <button className="pill" style={{ background: 'var(--signal-deep)', borderColor: 'var(--signal-deep)', color: '#FFF4EC' }}
+                  onClick={deleteAccount}>
+                  Delete everything
+                </button>
+                <button className="pill" onClick={() => setConfirmDelete(false)}>Cancel</button>
+              </div>
+            </div>
+          ) : (
+            <button className="p-row" onClick={() => setConfirmDelete(true)}>
+              <div>
+                <div className="lbl" style={{ color: 'var(--signal-deep)' }}>Delete account &amp; data</div>
+                <div className="hint">Erase everything stored on this server.</div>
+              </div>
+            </button>
           )}
         </div>
       </div>

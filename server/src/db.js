@@ -76,6 +76,7 @@ export const q = {
   getUser: db.prepare(`SELECT * FROM users WHERE id = ?`),
   getUserByName: db.prepare(`SELECT * FROM users WHERE username = ? COLLATE NOCASE`),
   claimUser: db.prepare(`UPDATE users SET username = ?, pass_hash = ?, pass_salt = ? WHERE id = ?`),
+  deleteUser: db.prepare(`DELETE FROM users WHERE id = ?`),
   setSettings: db.prepare(`UPDATE users SET settings = ? WHERE id = ?`),
 
   addSub: db.prepare(`INSERT OR REPLACE INTO subscriptions (user_id, feed_id, title, author, image, added_at)

@@ -26,7 +26,8 @@ export const api = {
   saveSettings: body => req('/settings', { method: 'POST', body }),
   claim: body => req('/account/claim', { method: 'POST', body }),
   login: body => req('/account/login', { method: 'POST', body }),
-  logout: () => req('/account/logout', { method: 'POST' })
+  logout: () => req('/account/logout', { method: 'POST' }),
+  deleteAccount: () => req('/account/delete', { method: 'POST' })
 };
 
 // Every image is loaded through our proxy — the browser never touches
