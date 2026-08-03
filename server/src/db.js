@@ -1,4 +1,4 @@
-import Database from 'better-sqlite3';
+import Database from 'better-sqlite3-multiple-ciphers';
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -6,7 +6,30 @@ const DATA_DIR = process.env.DATA_DIR || './data';
 fs.mkdirSync(DATA_DIR, { recursive: true });
 
 export const db = new Database(path.join(DATA_DIR, 'funkel.db'));
-db.pragma('journal_mode = WAL');
+
+// At-rest encryption (ChaCha20-Poly1305 via SQLite3MultipleCiphers). With
+// DB_ENCRYPTION_KEY set, the file on disk — and any volume backup of it — is
+// unreadable without the key. Set it before first launch; an existing
+// plaintext database cannot be opened with a key (and vice versa).
+const DB_KEY = process.env.DB_ENCRYPTION_KEY;
+if (DB_KEY) {
+  db.pragma(`key='${DB_KEY.replace(/'/g, "''")}'`);
+  console.log('[db] at-rest encryption enabled');
+} else {
+  console.log('[db] DB_ENCRYPTION_KEY not set — database is stored unencrypted');
+}
+try {
+  db.pragma('journal_mode = WAL');
+} catch (e) {
+  if (String(e.message).includes('not a database')) {
+    console.error(
+      '[db] cannot open funkel.db — the encryption key is wrong, or the file was ' +
+      'created with a different DB_ENCRYPTION_KEY setting (encrypted vs plain).'
+    );
+    process.exit(1);
+  }
+  throw e;
+}
 db.pragma('foreign_keys = ON');
 
 db.exec(`

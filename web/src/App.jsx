@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { Routes, Route, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { useStore } from './store.js';
 import { toggle, seekTo, skip, setRate, cycleSleep } from './player.js';
-import { img } from './api.js';
 import { fmtTime, piEpisodeUrl, share } from './utils.js';
+import { Art } from './components.jsx';
 import {
   IconPlay, IconPause, IconBack15, IconFwd30, IconSearch, IconLibrary,
   IconAntenna, IconShare, IconChevronDown, IconMoon
@@ -80,7 +80,7 @@ function MiniPlayer() {
     <div className="miniplayer" role="button" tabIndex={0} onClick={openSheet}
       onKeyDown={e => e.key === 'Enter' && openSheet()}>
       <div className="bar"><b style={{ width: pct + '%' }} /></div>
-      <div className="art">{current.image && <img src={img(current.image)} alt="" />}</div>
+      <div className="art"><Art src={current.image} /></div>
       <div className="body">
         <div className="name">{current.title}</div>
         <div className="kicker mono-label" style={{ color: 'var(--night-soft)' }}>
@@ -174,7 +174,7 @@ function PlayerSheet() {
         <div className="player-art-wrap"
           onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd}>
           <div className={'player-art' + (playing ? '' : ' paused')}>
-            {current.image && <img src={img(current.image)} alt="" />}
+            <Art src={current.image} />
           </div>
         </div>
 

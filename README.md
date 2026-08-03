@@ -81,7 +81,8 @@ npm run dev             # server :3000 + vite :5173 (proxied /api)
 2. **New Resource → Application**, pick the repo. Coolify detects the
    `Dockerfile` build pack automatically (the app listens on port 3000).
 3. **Environment variables**: set `PODCASTINDEX_KEY`, `PODCASTINDEX_SECRET`,
-   and optionally `DECODO_USERNAME` / `DECODO_PASSWORD`.
+   `DB_ENCRYPTION_KEY` (generate with `openssl rand -hex 32`; set it before
+   the first deploy), and optionally `DECODO_USERNAME` / `DECODO_PASSWORD`.
 4. **Persistent storage**: add a volume mounted at `/data`
    (this holds `funkel.db` — subscriptions, progress, accounts).
 5. Deploy. The health check is `GET /healthz`. Serve it over HTTPS (Coolify's
@@ -96,6 +97,7 @@ npm run dev             # server :3000 + vite :5173 (proxied /api)
 | Ad-tech redirects (Podtrac …) | Nothing — stripped before fetch. |
 | Podcast Index API | Server-side queries only; keys never reach the browser. |
 | Your server | Anonymous UUID sessions; optional username + scrypt-hashed passphrase. No email, no IP logging. |
+| Someone with disk access to your server | With `DB_ENCRYPTION_KEY` set, an unreadable ChaCha20-Poly1305-encrypted database file. The key lives only in the platform's secret store. |
 | Third parties in the browser | None. Same-origin requests only, fonts self-hosted. |
 
 Data from [Podcast Index](https://podcastindex.org).

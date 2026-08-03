@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { img } from './api.js';
 import { fmtDate, fmtDuration, fmtTime } from './utils.js';
@@ -5,9 +6,15 @@ import { useStore } from './store.js';
 import { playEpisode } from './player.js';
 import { IconPlay, IconPause, IconCheck, IconPlus } from './icons.jsx';
 
+// Artwork sits on the sunken paper tone and fades in only once fully
+// decoded — no top-to-bottom progressive rendering.
 export function Art({ src, alt = '' }) {
+  const [loaded, setLoaded] = useState(false);
   return src
     ? <img src={img(src)} alt={alt} loading="lazy" decoding="async"
+        className={'fade-art' + (loaded ? ' in' : '')}
+        ref={el => { if (el?.complete && el.naturalWidth > 0) setLoaded(true); }}
+        onLoad={() => setLoaded(true)}
         onError={e => { e.currentTarget.style.visibility = 'hidden'; }} />
     : null;
 }

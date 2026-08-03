@@ -78,6 +78,10 @@ button:active { opacity: 0.9; }
 
 a { color: inherit; text-decoration: none; }
 img { display: block; }
+
+/* covers fade in once decoded instead of painting top-to-bottom */
+.fade-art { opacity: 0; transition: opacity 450ms ease; }
+.fade-art.in { opacity: 1; }
 ::selection { background: rgba(232, 80, 31, 0.25); }
 
 /* ---------- type helpers ---------- */
