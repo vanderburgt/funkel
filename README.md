@@ -4,7 +4,7 @@
 
 <h1 align="center">Funkel</h1>
 
-<p align="center"><em>A quiet, private podcast player for the web.<br/>Paper, ink, one orange signal.</em></p>
+<p align="center"><em>A quiet, private podcast player for the web.</em></p>
 
 <p align="center">
   <img src="docs/screens/home.png" width="24%" alt="Library" />
@@ -13,27 +13,8 @@
   <img src="docs/screens/player.png" width="24%" alt="Player" />
 </p>
 
-```text
-                          ·   ·   ·
-                     ·               ·
-                 ·        ·  ·  ·        ·
-               ·       ·           ·       ·
-              ·      ·      (( • ))     ·      ·
-                             │
-                             │
-              ┌──────────────┴──────────────┐
-              │   ◉ funk        [0][0][4][2]│
-              │                             │
-              │   (15↺)   ( ▶ / ‖ )   (↻30) │
-              │    stop  ·  start  ·  weiter│
-              └─────────────────────────────┘
-```
-
-Funkel (*Funk* — German for radio; *funkeln* — to sparkle) is a self-hostable,
-mobile-first podcast app built on the open [Podcast Index](https://podcastindex.org).
-It is designed like printed matter — editorial serif headlines, monospace
-metadata, hairline rules — with tactile, Braun-inspired playback controls.
-Every element is built for the thumb.
+Funkel is a self-hostable, mobile-first podcast app built on the open
+[Podcast Index](https://podcastindex.org).
 
 ## Features
 
