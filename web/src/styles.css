@@ -255,7 +255,9 @@ img { display: block; }
   align-items: center;
   width: 100%;
   text-align: left;
-  padding: 13px 0;
+  /* fixed height: rows stay uniform whether titles run one line or two */
+  height: 88px;
+  padding: 0;
   border-bottom: 1px solid var(--hairline);
   position: relative;
 }
@@ -465,6 +467,7 @@ img { display: block; }
 .resume-card {
   scroll-snap-align: start;
   flex: 0 0 252px;
+  height: 84px;
   display: flex;
   gap: 12px;
   align-items: center;

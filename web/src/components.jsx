@@ -42,23 +42,21 @@ export function EpisodeRow({ ep, ctx = {}, showFeed = false }) {
   const pct = p && p.duration > 0 ? Math.min(100, (p.position / p.duration) * 100) : 0;
   const done = p?.completed;
 
-  const date = fmtDate(ep.datePublished);
-  const dur = fmtDuration(ep.duration);
+  // One meta line keeps every row the same height.
+  const meta = [
+    showFeed ? (ep._feedTitle || ep.feedTitle || ctx.feedTitle) : null,
+    fmtDate(ep.datePublished),
+    done ? 'Played'
+      : p && pct > 0 ? `${fmtTime(Math.max(0, p.duration - p.position))} left`
+      : fmtDuration(ep.duration)
+  ].filter(Boolean).join(' · ');
 
   return (
     <button className="row" onClick={() => nav('/episode/' + (ep.id ?? ep.episode_id), { state: { ep, ctx } })}>
       <div className="art"><Art src={ep.image || ep.feedImage || ep._feedImage || ctx.feedImage} /></div>
       <div className="body">
-        <div className="kicker mono-label">
-          {showFeed && (ep._feedTitle || ep.feedTitle || ctx.feedTitle)
-            ? (ep._feedTitle || ep.feedTitle || ctx.feedTitle)
-            : date}
-          {showFeed ? ' · ' + date : ''}
-        </div>
+        <div className="kicker mono-label">{meta}</div>
         <div className="name">{ep.title}</div>
-        <div className="sub">
-          {done ? 'Played' : p && pct > 0 ? `${fmtTime(Math.max(0, (p.duration - p.position)))} left` : dur}
-        </div>
         {pct > 0 && !done && <div className="progress-line"><b style={{ width: pct + '%' }} /></div>}
       </div>
       <RowPlayButton ep={ep} ctx={ctx} />
