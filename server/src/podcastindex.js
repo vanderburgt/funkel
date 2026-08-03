@@ -2,11 +2,15 @@ import crypto from 'node:crypto';
 import { proxiedFetch } from './net.js';
 
 const API = 'https://api.podcastindex.org/api/1.0';
-const KEY = process.env.PODCASTINDEX_KEY;
-const SECRET = process.env.PODCASTINDEX_SECRET;
+const KEY = (process.env.PODCASTINDEX_KEY || '').trim();
+const SECRET = (process.env.PODCASTINDEX_SECRET || '').trim();
 
 if (!KEY || !SECRET) {
-  console.error('PODCASTINDEX_KEY / PODCASTINDEX_SECRET missing — set them in .env');
+  console.error('[pi] PODCASTINDEX_KEY / PODCASTINDEX_SECRET missing — set them in .env');
+} else {
+  // Length only — helps catch env mangling (e.g. `$` interpolation by
+  // docker compose eating characters) without ever logging the values.
+  console.log(`[pi] credentials loaded — key ${KEY.length} chars, secret ${SECRET.length} chars`);
 }
 
 // Small TTL cache so repeated navigation is instant and we stay polite to the API.
