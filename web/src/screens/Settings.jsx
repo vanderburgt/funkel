@@ -2,9 +2,15 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from './../store.js';
 import { api } from './../api.js';
+import { applyTheme, themePref } from './../theme.js';
 import { IconChevronLeft } from './../icons.jsx';
 
 const RATES = [0.8, 1, 1.2, 1.5, 2];
+const THEMES = [
+  { v: 'auto', label: 'Auto' },
+  { v: 'light', label: 'Light' },
+  { v: 'dark', label: 'Dark' }
+];
 
 export default function Settings() {
   const nav = useNavigate();
@@ -15,6 +21,7 @@ export default function Settings() {
   const bootstrap = useStore(s => s.bootstrap);
   const showToast = useStore(s => s.showToast);
 
+  const [theme, setTheme] = useState(themePref);
   const [mode, setMode] = useState(null); // 'claim' | 'login' | null
   const [name, setName] = useState('');
   const [pass, setPass] = useState('');
@@ -43,6 +50,28 @@ export default function Settings() {
       </header>
 
       <div className="section" style={{ marginTop: 4 }}>
+        <div className="section-head"><span className="title serif">Appearance</span></div>
+        <div className="panel">
+          <div className="p-row">
+            <div>
+              <div className="lbl">Theme</div>
+              <div className="hint">Auto follows your device.</div>
+            </div>
+            <div className="seg">
+              {THEMES.map(t => (
+                <button key={t.v} className={theme === t.v ? 'on' : ''}
+                  onClick={() => {
+                    setTheme(t.v);
+                    applyTheme(t.v);
+                    saveSettings({ theme: t.v }).catch(() => {});
+                  }}>{t.label}</button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="section">
         <div className="section-head"><span className="title serif">Playback</span></div>
         <div className="panel">
           <div className="p-row">

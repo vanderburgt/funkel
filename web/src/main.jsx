@@ -6,6 +6,7 @@ import '@fontsource-variable/inter';
 import '@fontsource/ibm-plex-mono/400.css';
 import '@fontsource/ibm-plex-mono/500.css';
 import './styles.css';
+import './theme.js';
 import App from './App.jsx';
 import './player.js';
 

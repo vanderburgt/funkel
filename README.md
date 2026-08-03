@@ -64,8 +64,15 @@ npm run dev             # server :3000 + vite :5173 (proxied /api)
 3. **Environment variables**: set `PODCASTINDEX_KEY`, `PODCASTINDEX_SECRET`,
    `DB_ENCRYPTION_KEY` (generate with `openssl rand -hex 32`; set it before
    the first deploy), and optionally `DECODO_USERNAME` / `DECODO_PASSWORD`.
-4. **Persistent storage**: add a volume mounted at `/data`
-   (this holds `funkel.db` — subscriptions, progress, accounts).
+4. **Persistent storage**: *Add Volume Mount* with
+   - **Name**: `funkel-data` (any name — becomes the Docker named volume)
+   - **Source Path**: leave empty (empty = Docker-managed named volume;
+     filling it in would bind-mount a host directory instead)
+   - **Destination Path**: `/data` (must match — the image sets `DATA_DIR=/data`)
+
+   The SQLite database lives at `/data/funkel.db` and survives redeploys.
+   Set `DB_ENCRYPTION_KEY` before this first deploy: the encryption format is
+   fixed the moment the database file is created.
 5. Deploy. The health check is `GET /healthz`. Serve it over HTTPS (Coolify's
    default proxy does this) — required for the share sheet, PWA install and
    lock-screen controls.

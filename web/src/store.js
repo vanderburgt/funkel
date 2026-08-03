@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { api } from './api.js';
+import { applyTheme, themePref } from './theme.js';
 
 export const useStore = create((set, get) => ({
   // ---- user ----
@@ -23,6 +24,9 @@ export const useStore = create((set, get) => ({
         progressBy: index(me.progress),
         privacy: me.privacy || null
       });
+      // theme follows the account across devices
+      const t = me.settings?.theme;
+      if (t && t !== themePref()) applyTheme(t);
     } catch {
       set({ loaded: true });
     }
