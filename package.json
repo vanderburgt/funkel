@@ -1,0 +1,19 @@
+{
+  "name": "funkel",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Funkel — a privacy-preserving, editorial podcast player",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently -n server,web -c yellow,cyan \"npm run dev -w server\" \"npm run dev -w web\"",
+    "build": "npm run build -w web",
+    "start": "node server/src/index.js"
+  },
+  "workspaces": [
+    "server",
+    "web"
+  ],
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}
