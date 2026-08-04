@@ -97,7 +97,7 @@ export default function Episode() {
         </div>
       )}
 
-      <div style={{ display: 'flex', gap: 14, alignItems: 'center', marginTop: 18 }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center', marginTop: 18 }}>
         <button className="knob signal" style={{ width: 62, height: 62 }}
           aria-label={isThis && playing ? 'Pause' : 'Play'}
           onClick={() => playEpisode(ep, { feedId, feedTitle, feedImage: image })}>
