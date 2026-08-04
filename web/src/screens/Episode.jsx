@@ -5,7 +5,7 @@ import { Art } from './../components.jsx';
 import { cleanHtml, fmtDate, fmtDuration, fmtTime, piEpisodeUrl, share } from './../utils.js';
 import { useStore } from './../store.js';
 import { playEpisode, markPlayed } from './../player.js';
-import { IconChevronLeft, IconShare, IconPlay, IconPause, IconCheck } from './../icons.jsx';
+import { IconChevronLeft, IconShare, IconPlay, IconPause, IconCheck, IconQueueAdd } from './../icons.jsx';
 
 export default function Episode() {
   const { episodeId } = useParams();
@@ -19,6 +19,9 @@ export default function Episode() {
   const playing = useStore(s => s.playing);
   const progressBy = useStore(s => s.progressBy);
   const clearRow = useStore(s => s.removeProgressRow);
+  const queued = useStore(s => s.queue.some(r => r.episode_id === Number(episodeId)));
+  const queueAdd = useStore(s => s.queueAdd);
+  const queueRemove = useStore(s => s.queueRemove);
 
   const [ep, setEp] = useState(passed || null);
 
@@ -99,6 +102,12 @@ export default function Episode() {
           aria-label={isThis && playing ? 'Pause' : 'Play'}
           onClick={() => playEpisode(ep, { feedId, feedTitle, feedImage: image })}>
           {isThis && playing ? <IconPause size={24} /> : <IconPlay size={24} />}
+        </button>
+        <button className={'pill' + (queued ? ' on' : '')}
+          onClick={() => queued
+            ? queueRemove(Number(episodeId))
+            : queueAdd(ep, { feedId, feedTitle, feedImage: image })}>
+          <IconQueueAdd size={14} /> {queued ? 'Queued' : 'Queue'}
         </button>
         <button className="pill" onClick={doShare}>
           <IconShare size={14} /> Share

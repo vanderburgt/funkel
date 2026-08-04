@@ -8,8 +8,8 @@
 
 <p align="center">
   <img src="docs/screens/home.png" width="24%" alt="Library" />
-  <img src="docs/screens/discover.png" width="24%" alt="Discover" />
-  <img src="docs/screens/show.png" width="24%" alt="Show" />
+  <img src="docs/screens/new.png" width="24%" alt="New episodes" />
+  <img src="docs/screens/queue.png" width="24%" alt="Queue" />
   <img src="docs/screens/player.png" width="24%" alt="Player" />
 </p>
 
@@ -19,9 +19,13 @@ Funkel is a self-hostable, mobile-first podcast app built on the open
 ## Features
 
 - **Follow shows, track progress** — subscriptions, resume-where-you-left-off,
-  a "Continue" shelf, a latest-episodes feed, mark played. State lives
-  server-side under an anonymous identity; optionally claim a sync name +
-  passphrase to carry your library across devices. No email, ever.
+  a "Continue" shelf, a **New** view of the latest episodes across everything
+  you follow, mark played. State lives server-side under an anonymous
+  identity; optionally claim a sync name + passphrase to carry your library
+  across devices. No email, ever.
+- **Listen queue** — line episodes up from any list, reorder or remove them,
+  and they play through in order: when one ends the next starts, and the
+  lock-screen next-track button jumps the queue.
 - **Full player** — background audio, lock-screen / hardware controls via the
   Media Session API (play, pause, ±seek, scrub, artwork), playback speed,
   sleep timer, ±15/30 s skips, swipe-down player sheet, persistent mini player.

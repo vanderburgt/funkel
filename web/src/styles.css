@@ -299,6 +299,32 @@ img { display: block; }
   text-overflow: ellipsis;
 }
 
+/* quiet icon-only action beside the play knob */
+.ghost-btn {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 44px;
+  flex-shrink: 0;
+  color: var(--ink-faint);
+}
+.ghost-btn:active { color: var(--ink); }
+
+/* queue rows: reorder / remove column */
+.qrow { gap: 10px; }
+.q-ctl {
+  display: flex;
+  flex-shrink: 0;
+}
+.q-ctl button {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 52px;
+  color: var(--ink-soft);
+}
+.q-ctl button:disabled { color: var(--ink-faint); opacity: 0.4; }
+
 /* thin progress line under a row's meta */
 .progress-line {
   height: 2px;
@@ -638,7 +664,7 @@ img { display: block; }
   margin: 0 auto;
   height: var(--tabbar-h);
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
 }
 .tab {
   display: flex;

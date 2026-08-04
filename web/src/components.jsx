@@ -4,7 +4,7 @@ import { img } from './api.js';
 import { fmtDate, fmtDuration, fmtTime } from './utils.js';
 import { useStore } from './store.js';
 import { playEpisode } from './player.js';
-import { IconPlay, IconPause, IconCheck, IconPlus } from './icons.jsx';
+import { IconPlay, IconPause, IconCheck, IconPlus, IconQueueAdd, IconX } from './icons.jsx';
 
 // Artwork sits on the sunken paper tone and fades in only once fully
 // decoded — no top-to-bottom progressive rendering.
@@ -35,6 +35,24 @@ export function RowPlayButton({ ep, ctx }) {
   );
 }
 
+// Quiet queue toggle that sits beside the play knob in rows.
+export function QueueToggle({ ep, ctx }) {
+  const episodeId = Number(ep.id ?? ep.episode_id);
+  const queued = useStore(s => s.queue.some(r => r.episode_id === episodeId));
+  const queueAdd = useStore(s => s.queueAdd);
+  const queueRemove = useStore(s => s.queueRemove);
+  return (
+    <button className="ghost-btn"
+      aria-label={queued ? 'Remove from queue' : 'Add to queue'}
+      onClick={e => {
+        e.stopPropagation(); e.preventDefault();
+        (queued ? queueRemove(episodeId) : queueAdd(ep, ctx)).catch?.(() => {});
+      }}>
+      {queued ? <IconX size={15} /> : <IconQueueAdd size={17} />}
+    </button>
+  );
+}
+
 export function EpisodeRow({ ep, ctx = {}, showFeed = false }) {
   const nav = useNavigate();
   const progressBy = useStore(s => s.progressBy);
@@ -59,6 +77,7 @@ export function EpisodeRow({ ep, ctx = {}, showFeed = false }) {
         <div className="name">{ep.title}</div>
         {pct > 0 && !done && <div className="progress-line"><b style={{ width: pct + '%' }} /></div>}
       </div>
+      <QueueToggle ep={ep} ctx={ctx} />
       <RowPlayButton ep={ep} ctx={ctx} />
     </button>
   );

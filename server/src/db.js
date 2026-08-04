@@ -69,6 +69,21 @@ CREATE TABLE IF NOT EXISTS progress (
 );
 
 CREATE INDEX IF NOT EXISTS idx_progress_updated ON progress(user_id, updated_at DESC);
+
+CREATE TABLE IF NOT EXISTS queue (
+  user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  episode_id INTEGER NOT NULL,
+  feed_id INTEGER NOT NULL,
+  pos INTEGER NOT NULL,
+  episode_title TEXT NOT NULL DEFAULT '',
+  feed_title TEXT NOT NULL DEFAULT '',
+  image TEXT NOT NULL DEFAULT '',
+  enclosure_url TEXT NOT NULL DEFAULT '',
+  enclosure_type TEXT NOT NULL DEFAULT '',
+  duration REAL NOT NULL DEFAULT 0,
+  added_at INTEGER NOT NULL,
+  PRIMARY KEY (user_id, episode_id)
+);
 `);
 
 export const q = {
@@ -96,5 +111,22 @@ export const q = {
   listProgress: db.prepare(`SELECT * FROM progress WHERE user_id = ? ORDER BY updated_at DESC LIMIT ?`),
   listProgressForFeed: db.prepare(`SELECT * FROM progress WHERE user_id = ? AND feed_id = ?`),
   getProgress: db.prepare(`SELECT * FROM progress WHERE user_id = ? AND episode_id = ?`),
-  deleteProgress: db.prepare(`DELETE FROM progress WHERE user_id = ? AND episode_id = ?`)
+  deleteProgress: db.prepare(`DELETE FROM progress WHERE user_id = ? AND episode_id = ?`),
+
+  listQueue: db.prepare(`SELECT * FROM queue WHERE user_id = ? ORDER BY pos ASC`),
+  addQueue: db.prepare(`INSERT OR REPLACE INTO queue
+    (user_id, episode_id, feed_id, pos, episode_title, feed_title, image,
+     enclosure_url, enclosure_type, duration, added_at)
+    VALUES (@user_id, @episode_id, @feed_id,
+     (SELECT COALESCE(MAX(pos), 0) + 1 FROM queue WHERE user_id = @user_id),
+     @episode_title, @feed_title, @image,
+     @enclosure_url, @enclosure_type, @duration, @added_at)`),
+  delQueue: db.prepare(`DELETE FROM queue WHERE user_id = ? AND episode_id = ?`),
+  setQueuePos: db.prepare(`UPDATE queue SET pos = ? WHERE user_id = ? AND episode_id = ?`)
 };
+
+// Rewrite the whole ordering in one transaction; ids not in the list keep
+// their relative order after the listed ones.
+export const reorderQueue = db.transaction((uid, order) => {
+  order.forEach((episodeId, i) => q.setQueuePos.run(i + 1, uid, Number(episodeId)));
+});

@@ -6,10 +6,11 @@ import { fmtTime, piEpisodeUrl, share } from './utils.js';
 import { Art } from './components.jsx';
 import {
   IconPlay, IconPause, IconBack15, IconFwd30, IconSearch, IconLibrary,
-  IconAntenna, IconShare, IconChevronDown, IconMoon
+  IconAntenna, IconQueue, IconShare, IconChevronDown, IconMoon
 } from './icons.jsx';
 import Home from './screens/Home.jsx';
-import Discover from './screens/Discover.jsx';
+import New from './screens/New.jsx';
+import Queue from './screens/Queue.jsx';
 import Search from './screens/Search.jsx';
 import Podcast from './screens/Podcast.jsx';
 import Episode from './screens/Episode.jsx';
@@ -24,7 +25,8 @@ export default function App() {
       <ScrollRestorer />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/discover" element={<Discover />} />
+        <Route path="/new" element={<New />} />
+        <Route path="/queue" element={<Queue />} />
         <Route path="/search" element={<Search />} />
         <Route path="/podcast/:feedId" element={<Podcast />} />
         <Route path="/episode/:episodeId" element={<Episode />} />
@@ -47,7 +49,8 @@ function ScrollRestorer() {
 function TabBar() {
   const tabs = [
     { to: '/', label: 'Library', icon: <IconLibrary size={21} /> },
-    { to: '/discover', label: 'Discover', icon: <IconAntenna size={21} /> },
+    { to: '/new', label: 'New', icon: <IconAntenna size={21} /> },
+    { to: '/queue', label: 'Queue', icon: <IconQueue size={21} /> },
     { to: '/search', label: 'Search', icon: <IconSearch size={21} /> }
   ];
   return (

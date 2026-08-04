@@ -83,6 +83,30 @@ export const IconPlus = ({ size }) => (
   <I size={size}><path d="M12 5v14M5 12h14" /></I>
 );
 
+// Stacked lines with a play wedge — the listen queue.
+export const IconQueue = ({ size }) => (
+  <I size={size}>
+    <path d="M4 6h16M4 11h16M4 16h9" />
+    <path d="M16.5 14.5v6l5-3z" fill="currentColor" stroke="none" />
+  </I>
+);
+
+// Lines with a plus — add to the listen queue.
+export const IconQueueAdd = ({ size }) => (
+  <I size={size}>
+    <path d="M4 6h16M4 11h16M4 16h8" />
+    <path d="M17.5 14v6M14.5 17h6" />
+  </I>
+);
+
+export const IconX = ({ size }) => (
+  <I size={size}><path d="M6 6l12 12M18 6L6 18" /></I>
+);
+
+export const IconChevronUp = ({ size }) => (
+  <I size={size}><path d="M5 14.5l7-7 7 7" /></I>
+);
+
 export const IconChevronLeft = ({ size }) => (
   <I size={size}><path d="M14.5 5l-7 7 7 7" /></I>
 );

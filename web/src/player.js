@@ -201,7 +201,18 @@ audio.addEventListener('canplay', () => store.setState({ buffering: false }));
 audio.addEventListener('ended', () => {
   store.setState({ playing: false });
   saveProgress(true);
+  playNextInQueue();
 });
+
+// The listen queue takes over when an episode finishes. Playing a queued
+// episode removes it from the queue.
+export function playNextInQueue() {
+  const next = store.getState().queue[0];
+  if (!next || !next.enclosure_url) return false;
+  store.getState().queueRemove(next.episode_id, true);
+  playEpisode(next);
+  return true;
+}
 
 audio.addEventListener('error', () => {
   if (!audio.src) return;
@@ -238,7 +249,7 @@ function setMediaSession(ep) {
   });
   try {
     ms.setActionHandler('previoustrack', () => skip(-SKIP_BACK));
-    ms.setActionHandler('nexttrack', () => skip(SKIP_FWD));
+    ms.setActionHandler('nexttrack', () => { if (!playNextInQueue()) skip(SKIP_FWD); });
   } catch { /* optional */ }
 }
 

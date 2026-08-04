@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { pi } from './podcastindex.js';
-import { db, q } from './db.js';
+import { db, q, reorderQueue } from './db.js';
 import { setCookie, hashPassword, verifyPassword } from './session.js';
 import { imageProxy, audioProxy } from './proxy.js';
 import { stripTrackers } from './adblock.js';
@@ -22,6 +22,7 @@ api.get('/me', wrap(async (req, res) => {
     settings: JSON.parse(user?.settings || '{}'),
     subscriptions: q.listSubs.all(req.uid),
     progress: q.listProgress.all(req.uid, 100),
+    queue: q.listQueue.all(req.uid),
     privacy: { relay: proxyEnabled }
   });
 }));
@@ -173,6 +174,42 @@ api.put('/progress', wrap(async (req, res) => {
 api.delete('/progress/:episodeId', wrap(async (req, res) => {
   q.deleteProgress.run(req.uid, Number(req.params.episodeId));
   res.json({ ok: true });
+}));
+
+// ---------- listen queue ----------
+
+api.get('/queue', wrap(async (req, res) => {
+  res.json({ queue: q.listQueue.all(req.uid) });
+}));
+
+api.post('/queue', wrap(async (req, res) => {
+  const b = req.body || {};
+  if (!b.episodeId || !b.feedId) return res.status(400).json({ error: 'episodeId and feedId required' });
+  q.addQueue.run({
+    user_id: req.uid,
+    episode_id: Number(b.episodeId),
+    feed_id: Number(b.feedId),
+    episode_title: String(b.episodeTitle || ''),
+    feed_title: String(b.feedTitle || ''),
+    image: String(b.image || ''),
+    enclosure_url: String(b.enclosureUrl || ''),
+    enclosure_type: String(b.enclosureType || ''),
+    duration: Number(b.duration) || 0,
+    added_at: Date.now()
+  });
+  res.json({ queue: q.listQueue.all(req.uid) });
+}));
+
+api.delete('/queue/:episodeId', wrap(async (req, res) => {
+  q.delQueue.run(req.uid, Number(req.params.episodeId));
+  res.json({ queue: q.listQueue.all(req.uid) });
+}));
+
+api.put('/queue', wrap(async (req, res) => {
+  const order = Array.isArray(req.body?.order) ? req.body.order : null;
+  if (!order) return res.status(400).json({ error: 'order array required' });
+  reorderQueue(req.uid, order);
+  res.json({ queue: q.listQueue.all(req.uid) });
 }));
 
 // ---------- privacy proxy ----------

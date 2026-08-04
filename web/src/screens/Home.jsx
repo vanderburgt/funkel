@@ -1,9 +1,7 @@
-import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from './../store.js';
-import { api } from './../api.js';
 import { todayLine, fmtTime } from './../utils.js';
-import { Art, EpisodeRow, CoverCard, Empty, RowSkeletons } from './../components.jsx';
+import { Art, CoverCard, Empty } from './../components.jsx';
 import { playEpisode } from './../player.js';
 import { IconSettings, IconPlay } from './../icons.jsx';
 
@@ -12,15 +10,6 @@ export default function Home() {
   const loaded = useStore(s => s.loaded);
   const subscriptions = useStore(s => s.subscriptions);
   const progress = useStore(s => s.progress);
-  const [inbox, setInbox] = useState(null);
-
-  useEffect(() => {
-    if (!loaded) return;
-    if (subscriptions.length === 0) { setInbox([]); return; }
-    let alive = true;
-    api.inbox().then(d => alive && setInbox(d.episodes)).catch(() => alive && setInbox([]));
-    return () => { alive = false; };
-  }, [loaded, subscriptions.length]);
 
   const resumable = progress.filter(p => !p.completed && p.position > 5 && p.enclosure_url);
 
@@ -42,7 +31,7 @@ export default function Home() {
           glyph="→ ↘ ↗ ←"
           note="Nothing here yet. Follow a few shows and their new episodes will gather on this page."
           cta="Find your first show"
-          to="/discover"
+          to="/search"
         />
       )}
 
@@ -73,21 +62,6 @@ export default function Home() {
               </button>
             ))}
           </div>
-        </section>
-      )}
-
-      {subscriptions.length > 0 && (
-        <section className="section">
-          <div className="section-head">
-            <span className="title serif">Latest</span>
-          </div>
-          {inbox === null ? <RowSkeletons n={5} /> : inbox.length === 0 ? (
-            <Empty glyph="( )*" note="No recent episodes from the shows you follow." />
-          ) : (
-            <div className="rows">
-              {inbox.map(ep => <EpisodeRow key={ep.id} ep={ep} showFeed />)}
-            </div>
-          )}
         </section>
       )}
 

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api } from './../api.js';
-import { Art, FollowButton, RowSkeletons, Empty } from './../components.jsx';
+import { Art, CoverCard, FollowButton, GridSkeletons, RowSkeletons, Empty } from './../components.jsx';
 import { IconSearch } from './../icons.jsx';
 
 export default function Search() {
@@ -11,6 +11,14 @@ export default function Search() {
   const [busy, setBusy] = useState(false);
   const inputRef = useRef(null);
   const timer = useRef(null);
+  const [popular, setPopular] = useState(null);
+
+  // With no query, the page offers what's being listened to right now.
+  useEffect(() => {
+    let alive = true;
+    api.trending().then(d => alive && setPopular(d.feeds)).catch(() => alive && setPopular([]));
+    return () => { alive = false; };
+  }, []);
 
   useEffect(() => {
     if (!q) inputRef.current?.focus();
@@ -79,10 +87,23 @@ export default function Search() {
           </div>
         )}
         {!busy && !results && (
-          <div className="empty" style={{ border: 'none', background: 'transparent' }}>
-            <div className="glyph">⌕</div>
-            <div className="note">Search the open podcast index — four million shows, no gatekeeper.</div>
-          </div>
+          <section className="section" style={{ marginTop: 0 }}>
+            <div className="section-head">
+              <span className="title serif">Popular now</span>
+            </div>
+            {popular === null ? <GridSkeletons n={9} /> : popular.length === 0 ? (
+              <div className="empty" style={{ border: 'none', background: 'transparent' }}>
+                <div className="glyph">⌕</div>
+                <div className="note">Search the open podcast index — four million shows, no gatekeeper.</div>
+              </div>
+            ) : (
+              <div className="cover-grid">
+                {popular.slice(0, 12).map(f => (
+                  <CoverCard key={f.id} feed={f} onClick={() => nav('/podcast/' + f.id)} />
+                ))}
+              </div>
+            )}
+          </section>
         )}
       </div>
     </main>
