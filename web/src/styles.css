@@ -4,6 +4,60 @@
    Paper, ink, one orange signal, monospace metadata, hairlines.
    ============================================================ */
 
+/* ---------- self-hosted fonts ----------
+   Loaded from /fonts (preloaded in index.html) instead of the fontsource
+   CSS so we control font-display. Fraunces uses `block`: its fallback
+   (Georgia) is nowhere near it in weight, so a swap reads as a jarring
+   thin→thick flip. Inter/Plex swap — their fallbacks are metrically close.
+   These filenames are cached immutable for a year: rename on replace. */
+
+@font-face {
+  font-family: 'Fraunces Variable';
+  font-style: normal;
+  font-display: block;
+  font-weight: 100 900;
+  src: url(/fonts/fraunces-latin-full-normal.woff2) format('woff2-variations');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+@font-face {
+  font-family: 'Fraunces Variable';
+  font-style: normal;
+  font-display: block;
+  font-weight: 100 900;
+  src: url(/fonts/fraunces-latin-ext-full-normal.woff2) format('woff2-variations');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Inter Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url(/fonts/inter-latin-wght-normal.woff2) format('woff2-variations');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+@font-face {
+  font-family: 'Inter Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url(/fonts/inter-latin-ext-wght-normal.woff2) format('woff2-variations');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url(/fonts/ibm-plex-mono-latin-400-normal.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url(/fonts/ibm-plex-mono-latin-500-normal.woff2) format('woff2');
+}
+
 :root {
   --paper: #F3EFE6;
   --paper-raised: #FAF7F0;
@@ -146,7 +200,7 @@ img { display: block; }
 
 .serif {
   font-family: var(--serif);
-  font-variation-settings: 'opsz' 32, 'SOFT' var(--serif-soft), 'WONK' 0;
+  font-variation-settings: 'wght' var(--wt-title), 'opsz' 32, 'SOFT' var(--serif-soft), 'WONK' 0;
   letter-spacing: -0.01em;
 }
 
@@ -196,7 +250,7 @@ img { display: block; }
 
 .masthead .wordmark {
   font-family: var(--serif);
-  font-variation-settings: 'opsz' 36, 'SOFT' var(--serif-soft), 'WONK' 1;
+  font-variation-settings: 'wght' var(--wt-display), 'opsz' 36, 'SOFT' var(--serif-soft), 'WONK' 1;
   font-weight: var(--wt-display);
   font-size: 28px;
   letter-spacing: -0.015em;
@@ -221,7 +275,7 @@ img { display: block; }
 
 .pagehead h1 {
   font-family: var(--serif);
-  font-variation-settings: 'opsz' 34, 'SOFT' var(--serif-soft), 'WONK' 0;
+  font-variation-settings: 'wght' var(--wt-title), 'opsz' 34, 'SOFT' var(--serif-soft), 'WONK' 0;
   font-weight: var(--wt-title);
   font-size: 26px;
   letter-spacing: -0.01em;
@@ -253,7 +307,7 @@ img { display: block; }
 }
 .section-head .title {
   font-family: var(--serif);
-  font-variation-settings: 'opsz' 28, 'SOFT' var(--serif-soft);
+  font-variation-settings: 'wght' var(--wt-title), 'opsz' 28, 'SOFT' var(--serif-soft);
   font-weight: var(--wt-title);
   font-size: 19px;
 }
@@ -593,7 +647,7 @@ img { display: block; }
 .hero h1 {
   margin-top: 18px;
   font-family: var(--serif);
-  font-variation-settings: 'opsz' 34, 'SOFT' var(--serif-soft), 'WONK' 0;
+  font-variation-settings: 'wght' var(--wt-title), 'opsz' 34, 'SOFT' var(--serif-soft), 'WONK' 0;
   font-weight: var(--wt-title);
   font-size: 26px;
   line-height: 1.12;
@@ -646,7 +700,7 @@ img { display: block; }
 
 .ep-title {
   font-family: var(--serif);
-  font-variation-settings: 'opsz' 32, 'SOFT' var(--serif-soft);
+  font-variation-settings: 'wght' var(--wt-title), 'opsz' 32, 'SOFT' var(--serif-soft);
   font-weight: var(--wt-title);
   font-size: 21px;
   line-height: 1.18;
@@ -833,7 +887,7 @@ img { display: block; }
 }
 .player-titles .name {
   font-family: var(--serif);
-  font-variation-settings: 'opsz' 32, 'SOFT' var(--serif-soft);
+  font-variation-settings: 'wght' var(--wt-title), 'opsz' 32, 'SOFT' var(--serif-soft);
   font-weight: var(--wt-title);
   font-size: 20px;
   line-height: 1.2;

@@ -1,7 +1,7 @@
 // Funkel service worker — app shell + artwork cache.
 // Audio is intentionally never cached (Range requests stream through).
 
-const SHELL = 'funkel-shell-v1';
+const SHELL = 'funkel-shell-v2';
 const ART = 'funkel-art-v1';
 const ART_MAX = 200;
 
@@ -50,8 +50,8 @@ self.addEventListener('fetch', e => {
 
   if (url.pathname.startsWith('/api/')) return;
 
-  // hashed build assets: cache-first
-  if (url.pathname.startsWith('/assets/')) {
+  // hashed build assets + immutable fonts: cache-first
+  if (url.pathname.startsWith('/assets/') || url.pathname.startsWith('/fonts/')) {
     e.respondWith((async () => {
       const cache = await caches.open(SHELL);
       const hit = await cache.match(e.request);

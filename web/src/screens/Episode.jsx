@@ -109,9 +109,6 @@ export default function Episode() {
             : queueAdd(ep, { feedId, feedTitle, feedImage: image })}>
           <IconQueueAdd size={14} /> {queued ? 'Queued' : 'Queue'}
         </button>
-        <button className="pill" onClick={doShare}>
-          <IconShare size={14} /> Share
-        </button>
         <button className={'pill' + (done ? ' on' : '')}
           onClick={() => {
             if (done) { clearRow(Number(episodeId)); api.clearProgress(episodeId).catch(() => {}); }

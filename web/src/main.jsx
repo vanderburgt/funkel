@@ -1,13 +1,8 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
-// The default fraunces import is wght-only; the full variant carries the
-// opsz/SOFT/WONK axes our type system depends on. Without it the serif is
-// stuck at the chunky small-text optical size — visibly too heavy.
-import '@fontsource-variable/fraunces/full.css';
-import '@fontsource-variable/inter';
-import '@fontsource/ibm-plex-mono/400.css';
-import '@fontsource/ibm-plex-mono/500.css';
+// Fonts are self-hosted @font-face rules in styles.css (preloaded from
+// index.html) — no fontsource imports, so we control font-display.
 import './styles.css';
 import './theme.js';
 import App from './App.jsx';
